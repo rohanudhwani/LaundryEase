@@ -7,6 +7,7 @@ import Services from '../components/Services'
 import DressItem from '../components/DressItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProducts } from '../ProductReducer'
+import { useNavigation } from '@react-navigation/native'
 
 
 
@@ -14,6 +15,9 @@ import { getProducts } from '../ProductReducer'
 const HomeScreen = () => {
 
     const cart = useSelector(state => state.cart.cart)
+
+    const total = cart.map((item) => item.quantity * item.price).reduce((curr, prev) => curr + prev, 0)
+    const navigation = useNavigation()
 
     const [displayCurrentAddress, setSisplayCurrentAddress] = useState('Wait, we are fetching you location...')
 
@@ -130,32 +134,53 @@ const HomeScreen = () => {
 
 
   return (
-    <ScrollView style={{backgroundColor: '#F0F0F0', flex:1, marginTop:20}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', padding:10 }}>
-            <MaterialIcons name="location-on" size={30} color="#fd5c63" />
-            <View>
-                <Text style={{ fontSize: 18, fontWeight: "600"}}>Home</Text>
-                <Text>{displayCurrentAddress}</Text>
+
+    <>
+
+        <ScrollView style={{backgroundColor: '#F0F0F0', flex:1, marginTop:20}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', padding:10 }}>
+                <MaterialIcons name="location-on" size={30} color="#fd5c63" />
+                <View>
+                    <Text style={{ fontSize: 18, fontWeight: "600"}}>Home</Text>
+                    <Text>{displayCurrentAddress}</Text>
+                </View>
+
+                <Pressable style={{marginLeft:'auto', marginRight:7}}>
+                    <Image style={{width: 50, height:50, borderRadius:20}} source={{uri:"https://lh3.googleusercontent.com/a/ACg8ocKlmfi5NPiD1oMp68TCIiB8el5byw-Lntgnyp0DSs2NZ8SC=s396-c-no"}} />
+                </Pressable>
+            </View> 
+
+            <View style={{padding:10, margin:10, flexDirection:"row", alignItems:"center", justifyContent:'space-between', borderWidth: 0.8, borderColor: "#C0C0C0", borderRadius:7}}>
+                <TextInput placeholder="Search for items or More" />
+                <Feather name="search" size={24} color="#fd5c63"/>
             </View>
 
-            <Pressable style={{marginLeft:'auto', marginRight:7}}>
-                <Image style={{width: 50, height:50, borderRadius:20}} source={{uri:"https://lh3.googleusercontent.com/a/ACg8ocKlmfi5NPiD1oMp68TCIiB8el5byw-Lntgnyp0DSs2NZ8SC=s396-c-no"}} />
+            <Carousel />
+            <Services />
+
+            {/* Render the products */}
+            {product.map((item, index) => (
+                <DressItem item={item} key={index} />
+            ))}
+        </ScrollView>
+
+        {total===0 ? (
+            null
+        ) : (
+            <Pressable style={{backgroundColor:"#088F8F", padding:10, marginBottom:30, borderRadius:7, flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
+                <View>
+                    <Text style={{fontSize:15,fontWeight:"600",color:"white"}}>{cart.length} items |  $ {total}</Text>
+                    <Text style={{fontSize:15,fontWeight:"400",color:"white",marginVertical:6}}>Extra charges might apply</Text>
+                </View>
+
+                <Pressable onPress={() => navigation.navigate("PickUp")}>
+                    <Text style={{fontSize:17,fontWeight:"600",color:"white"}}>Proceed to pickup</Text>
+                </Pressable>
             </Pressable>
-        </View> 
-
-        <View style={{padding:10, margin:10, flexDirection:"row", alignItems:"center", justifyContent:'space-between', borderWidth: 0.8, borderColor: "#C0C0C0", borderRadius:7}}>
-            <TextInput placeholder="Search for items or More" />
-            <Feather name="search" size={24} color="#fd5c63"/>
-        </View>
-
-        <Carousel />
-        <Services />
-
-        {/* Render the products */}
-        {product.map((item, index) => (
-            <DressItem item={item} key={index} />
-        ))}
-    </ScrollView>
+        )}
+        
+        
+    </>
   )
 }
 
