@@ -5,11 +5,15 @@ import { Feather, MaterialIcons } from '@expo/vector-icons'
 import Carousel from '../components/Carousel'
 import Services from '../components/Services'
 import DressItem from '../components/DressItem'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProducts } from '../ProductReducer'
 
 
 
 
 const HomeScreen = () => {
+
+    const cart = useSelector(state => state.cart.cart)
 
     const [displayCurrentAddress, setSisplayCurrentAddress] = useState('Wait, we are fetching you location...')
 
@@ -112,9 +116,21 @@ const HomeScreen = () => {
         },
       ];
 
+    const product = useSelector((state) => state.product.product)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if(product.length > 0) return;
+        
+        const fetchProducts = async () => {
+            services.map((service) => dispatch(getProducts(service)))
+        }
+        fetchProducts()
+    }, [])
+    
+
 
   return (
-    <ScrollView style={{backgroundColor: '#F0F0F0', flex:1}}>
+    <ScrollView style={{backgroundColor: '#F0F0F0', flex:1, marginTop:20}}>
         <View style={{flexDirection: 'row', alignItems: 'center', padding:10 }}>
             <MaterialIcons name="location-on" size={30} color="#fd5c63" />
             <View>
@@ -123,7 +139,7 @@ const HomeScreen = () => {
             </View>
 
             <Pressable style={{marginLeft:'auto', marginRight:7}}>
-                <Image style={{width: 50, height:50, borderRadius:20}} source={{uri:"https://lh3.googleusercontent.com/-PyCd43npZm8/AAAAAAAAAAI/AAAAAAAAAAA/AFNEGgJLlzktrC8P2knXBTsPxdbCeg-OCA/photo.jpg?sz=46"}} />
+                <Image style={{width: 50, height:50, borderRadius:20}} source={{uri:"https://lh3.googleusercontent.com/a/ACg8ocKlmfi5NPiD1oMp68TCIiB8el5byw-Lntgnyp0DSs2NZ8SC=s396-c-no"}} />
             </Pressable>
         </View> 
 
@@ -136,7 +152,7 @@ const HomeScreen = () => {
         <Services />
 
         {/* Render the products */}
-        {services.map((item, index) => (
+        {product.map((item, index) => (
             <DressItem item={item} key={index} />
         ))}
     </ScrollView>
