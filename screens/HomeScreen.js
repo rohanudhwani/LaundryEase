@@ -61,7 +61,7 @@ const HomeScreen = () => {
             const {latitude, longitude} = coords
             let response = await Location.reverseGeocodeAsync({latitude, longitude})
             for(let item of response) {
-                let address = `${item.name}, ${item.city}, ${item.postalCode}, ${item.country}`
+                let address = `₹{item.name}, ₹{item.city}, ₹{item.postalCode}, ₹{item.country}`
                 setSisplayCurrentAddress(address)
                 break
             }
@@ -169,7 +169,7 @@ const HomeScreen = () => {
         ) : (
             <Pressable style={{backgroundColor:"#088F8F", padding:10, marginBottom:30, borderRadius:7, flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
                 <View>
-                    <Text style={{fontSize:15,fontWeight:"600",color:"white"}}>{cart.length} items |  $ {total}</Text>
+                    <Text style={{fontSize:15,fontWeight:"600",color:"white"}}>{cart.length} items |  ₹ {total}</Text>
                     <Text style={{fontSize:15,fontWeight:"400",color:"white",marginVertical:6}}>Extra charges might apply</Text>
                 </View>
 

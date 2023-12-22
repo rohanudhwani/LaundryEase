@@ -199,7 +199,7 @@ const PickUpScreen = () => {
         >
           <View>
             <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
-              {cart.length} items | $ {total}
+              {cart.length} items | ₹ {total}
             </Text>
             <Text
               style={{
