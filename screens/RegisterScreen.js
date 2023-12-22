@@ -3,6 +3,10 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialCommunityIcons, Ionicons, Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import { Alert } from 'react-native'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth, db } from '../Firebase'
+import { doc, setDoc } from 'firebase/firestore'
 
 const RegisterScreen = () => {
 
@@ -11,6 +15,29 @@ const RegisterScreen = () => {
     const [phone, setPhone] = useState("")
 
     const navigation = useNavigation()
+
+    const register = () => {
+        if (email === "" || password === "" || phone === "") {
+            Alert.alert(
+                "Invalid Details",
+                "Please fill all the fields",
+                [
+                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
+        }
+
+        createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            const user = userCredential._tokenResponse.email;
+            const myUserUid = auth.currentUser.uid;
+
+            setDoc(doc(db, "users", `${myUserUid}`), {
+                email:user,
+                phone:phone
+
+            })
+        })
+    }
 
 
     return (
@@ -38,7 +65,7 @@ const RegisterScreen = () => {
                         <TextInput placeholder='Phone No.' value={phone} onChangeText={(text) => setPhone(text)} keyboardType="numeric" style={{ width: 300, borderWidth: 1, borderColor: "#bcbcbc", borderRadius: 10, paddingLeft: 40, paddingVertical: 10, fontSize: 18 }} />
                     </View>
 
-                    <Pressable style={{ width: 200, backgroundColor: "#318CE7", padding: 15, borderRadius: 7, marginTop: 50, marginLeft: "auto", marginRight: "auto" }}>
+                    <Pressable onPress={register} style={{ width: 200, backgroundColor: "#318CE7", padding: 15, borderRadius: 7, marginTop: 50, marginLeft: "auto", marginRight: "auto" }}>
                         <Text style={{ fontSize: 18, textAlign: "center", color: "white" }}>Register</Text>
                     </Pressable>
 

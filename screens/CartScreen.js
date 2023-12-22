@@ -4,16 +4,34 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from "@expo/vector-icons";
-import { decrementQuantity, incrementQuantity } from '../CartReducer';
+import { cleanCart, decrementQuantity, incrementQuantity } from '../CartReducer';
 import { decrementQty, incrementQty } from '../ProductReducer';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../Firebase';
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
   const route = useRoute();
-  const total = cart.map((item) => item.quantity * item.price).reduce((curr, prev) => curr + prev, 0);
+  const total = cart
+    .map((item) => item.quantity * item.price)
+    .reduce((curr, prev) => curr + prev, 0);
   const navigation = useNavigation();
+  const userUid = auth.currentUser.uid;
   const dispatch = useDispatch();
-
+  const placeOrder = async () => {
+    navigation.navigate("Order");
+    dispatch(cleanCart());
+    await setDoc(
+      doc(db, "users", `${userUid}`),
+      {
+        orders: { ...cart },
+        pickUpDetails: route.params,
+      },
+      {
+        merge: true,
+      }
+    );
+  };
 
   return (
     <>
@@ -25,15 +43,15 @@ const CartScreen = () => {
           </View>
         ) : (
           <>
-            <View style={{padding:10, flexDirection:"row", alignItems:"center"}}>
+            <View style={{ padding: 10, flexDirection: "row", alignItems: "center" }}>
               <Ionicons onPress={() => navigation.goBack()} name="arrow-back" size={24} color="black" />
               <Text>Your Bucket</Text>
             </View>
 
-            <Pressable style={{backgroundColor:"white", borderRadius:12, marginLeft:10, marginRight:10, padding:14}}>
+            <Pressable style={{ backgroundColor: "white", borderRadius: 12, marginLeft: 10, marginRight: 10, marginTop:2, padding: 14 }}>
               {cart.map((item, index) => (
-                <View key={index} style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between", marginVertical:12}} >
-                  <Text style={{width:100, fontSize:16, fontWeight:"500"}} >{item.name}</Text>
+                <View key={index} style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: 12 }} >
+                  <Text style={{ width: 100, fontSize: 16, fontWeight: "500" }} >{item.name}</Text>
 
                   <Pressable
                     style={{
@@ -44,7 +62,7 @@ const CartScreen = () => {
                       borderColor: "#BEBEBE",
                       borderWidth: 0.5,
                       borderRadius: 10,
-                      
+
                     }}
                   >
                     <Pressable
@@ -98,13 +116,13 @@ const CartScreen = () => {
                   </Pressable>
 
 
-                  <Text style={{width:100, fontSize:16, fontWeight:"500", paddingLeft:45}} >₹ {item.price * item.quantity}</Text>
+                  <Text style={{ width: 100, fontSize: 16, fontWeight: "500", paddingLeft: 45 }} >₹ {item.price * item.quantity}</Text>
                 </View>
 
-                
+
               ))}
             </Pressable>
-            
+
             <View style={{ marginHorizontal: 10 }}>
               <Text style={{ fontSize: 16, fontWeight: "bold", marginTop: 30 }}>
                 Billing Details
@@ -268,7 +286,7 @@ const CartScreen = () => {
                     To Pay
                   </Text>
                   <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                    {total + 95}
+                    ₹{total + 60}
                   </Text>
                 </View>
               </View>
@@ -276,10 +294,43 @@ const CartScreen = () => {
 
           </>
         )}
+        {total === 0 ? null : (
+          <Pressable
+            style={{
+              backgroundColor: "#088F8F",
+              marginTop: "auto",
+              padding: 10,
+              marginBottom: 40,
+              margin: 15,
+              borderRadius: 7,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View>
+              <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+                {cart.length} items | $ {total}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "400",
+                  color: "white",
+                  marginVertical: 6,
+                }}
+              >
+                extra charges might apply
+              </Text>
+            </View>
 
-
-
-        <Text>Cart Screen</Text>
+            <Pressable onPress={placeOrder}>
+              <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+                Place Order
+              </Text>
+            </Pressable>
+          </Pressable>
+        )}
       </ScrollView>
     </>
   )

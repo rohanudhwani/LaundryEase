@@ -56,7 +56,7 @@ const PickUpScreen = () => {
           time: "1:00 PM",
         },
         {
-          id: "2",
+          id: "3",
           time: "2:00 PM",
         },
         {
@@ -122,7 +122,7 @@ const PickUpScreen = () => {
             startDate={new Date("2023-02-21")}
             endDate={new Date("2023-02-28")}
             initialSelectedDate={new Date("2020-08-22")}
-            onSelectedDateChange={(date) => setSelectedDate(date)}
+            onSelectedDateChange={(date) => setSelectedDate(date.toISOString())}
             selectedItemWidth={170}
             unselectedItemWidth={38}
             itemHeight={38}
@@ -138,7 +138,7 @@ const PickUpScreen = () => {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {times.map((item, index) => (
-                    <Pressable onPress={() => setSelectedTime(item.time)} style={
+                    <Pressable key={index} onPress={() => setSelectedTime(item.time)} style={
                         selectedTime.includes(item.time) ? {margin:10, borderRadius:7, padding:15, borderColor:"red", borderWidth:0.7} : {
                             margin:10, borderRadius:7, padding:15, borderColor:"gray", borderWidth:0.7
                         
