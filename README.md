@@ -17,11 +17,23 @@ LaundryEase is a convenient and user-friendly laundry application built with Rea
 - **Lottie Animations:** Enjoy a delightful animation when placing a successful order.
 - **Location Tracker:** Automatically detect and display the user's location.
 
-## Screenshots
+## GIFs
+| Login Process | App Usage |
+| --- | --- |
+| ![Login Process](./screenshots/login.gif) | ![App Usage](./screenshots/usage.gif) |
+| Visual demonstration of the login and signup process | Overview of the app usage, including product selection and order placement |
 
-![Home Screen](./screenshots/home_screen.png)
-![Cart Screen](./screenshots/cart_screen.png)
-![Order Placed Animation](./screenshots/order_animation.gif)
+## Screenshots
+| SignUp | SignIn | Home | Order |
+| --- | --- | --- | --- |
+| ![SignUp](./screenshots/signUp.jpg) | ![SignIn](./screenshots/signIn.jpg) | ![Home](./screenshots/home.jpg) | ![Order](./screenshots/order.jpg) |
+| Registration screen with email, password, and phone number fields | Login screen with email and password | Home screen showing user location and available products | Home screen with added products in the cart |
+
+| Profile | Pickup Details | Cart | Placed Animation |
+| --- | --- | --- | --- |
+| ![Profile](./screenshots/profile.jpg) | ![Pickup Details](./screenshots/pickupDetails.jpg) | ![Cart](./screenshots/cart.jpg) | ![Placed Animation](./screenshots/placedAnimation.jpg) |
+| User profile and sign-out option | Capture user's address, date, and time for laundry pickup | Final cart with billing information | Animation displayed after successfully placing an order |
+
 
 ## Installation
 
