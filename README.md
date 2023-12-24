@@ -6,6 +6,13 @@
 
 LaundryEase is a convenient and user-friendly laundry application built with React Native, Firebase integration, Lottie animations, and more. This app simplifies the laundry process, providing features like sign-in, sign-up, profile management, intuitive item selection with a user-friendly cart system, pickup details, order placement, and even a location tracker.
 
+
+## Installation
+
+### APK Download
+Download the latest version of the LaundryEase APK [here](https://github.com/rohanudhwani/LaundryEase/raw/master/LaundryEase.apk).
+
+
 ## Features
 
 - **Firebase Integration:** Secure sign-in and sign-up functionality using Firebase authentication.
@@ -34,11 +41,6 @@ LaundryEase is a convenient and user-friendly laundry application built with Rea
 | ![Profile](./screenshots/profile.jpg) | ![Pickup Details](./screenshots/pickupDetails.jpg) | ![Cart](./screenshots/cart.jpg) | ![Placed Animation](./screenshots/placedAnimation.jpg) |
 | User profile and sign-out option | Capture user's address, date, and time for laundry pickup | Final cart with billing information | Animation displayed after successfully placing an order |
 
-
-## Installation
-
-### APK Download
-Download the latest version of the LaundryEase APK [here](https://github.com/rohanudhwani/LaundryEase/raw/master/LaundryEase.apk).
 
 ## Getting Started
 
