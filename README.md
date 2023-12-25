@@ -64,6 +64,7 @@ Download the latest version of the LaundryEase APK [here](https://github.com/roh
    npx expo start
    ```
 
+
 ## Feedback and Contributions
 
 Feel free to contribute or provide feedback by creating an issue or submitting a pull request. We welcome your suggestions to make LaundryEase even better!
